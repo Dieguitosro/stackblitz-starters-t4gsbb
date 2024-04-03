@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   HTTP_INTERCEPTORS,
   HttpClient,
-  provideHttpClient,
-  withInterceptors
+  provideHttpClient
 } from '@angular/common/http';
 import { Component, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
@@ -13,11 +12,11 @@ import { RouterOutlet, provideRouter } from '@angular/router';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import 'zone.js';
+import { routes } from './app/core/config/app-config';
 import { HttpErrorInterceptor } from './app/core/interceptors/http-error.interceptor';
 import { LoaderSpinnerService } from './app/core/services/loader-spinner.service';
 import { UsersService } from './app/core/services/users.service';
 import LoaderSpinnerComponent from './app/shared/components/loader-spinner/loader-spinner.component';
-import { routes } from './app/core/config/app-config';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -50,9 +49,7 @@ export class AppComponent {
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(
-      withInterceptors([HttpErrorInterceptor])
-    ),
+    provideHttpClient(),
     provideAnimations(),
     importProvidersFrom(
       TranslateModule.forRoot({
@@ -65,6 +62,11 @@ bootstrapApplication(AppComponent, {
     ), 
     provideAnimationsAsync(),
     UsersService,
-    LoaderSpinnerService
+    LoaderSpinnerService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi:true
+    }
   ],
 });
