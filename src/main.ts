@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import {
-  HTTP_INTERCEPTORS,
   HttpClient,
-  provideHttpClient
+  provideHttpClient,
+  withInterceptors
 } from '@angular/common/http';
 import { Component, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
@@ -13,10 +13,8 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import 'zone.js';
 import { routes } from './app/core/config/app-config';
-import { HttpErrorInterceptor } from './app/core/interceptors/http-error.interceptor';
-import { LoaderSpinnerService } from './app/core/services/loader-spinner.service';
+import { httpInterceptor } from './app/core/interceptors/http.interceptor';
 import { UsersService } from './app/core/services/users.service';
-import LoaderSpinnerComponent from './app/shared/components/loader-spinner/loader-spinner.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -25,11 +23,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, TranslateModule, LoaderSpinnerComponent],
+  imports: [RouterOutlet, CommonModule, TranslateModule],
   standalone: true,
   template: `
     <div>
-      <app-loader-spinner></app-loader-spinner>
       <router-outlet></router-outlet>
     </div>
   `,
@@ -49,7 +46,7 @@ export class AppComponent {
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([httpInterceptor])),
     provideAnimations(),
     importProvidersFrom(
       TranslateModule.forRoot({
@@ -59,14 +56,8 @@ bootstrapApplication(AppComponent, {
           deps: [HttpClient],
         },
       })
-    ), 
+    ),
     provideAnimationsAsync(),
-    UsersService,
-    LoaderSpinnerService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,
-      multi:true
-    }
+    UsersService
   ],
 });

@@ -9,7 +9,7 @@ import { environment } from '../../../enviroments/environment';
 })
 export class ApiHttpService {
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   /**
    * Method to delete data
@@ -20,8 +20,7 @@ export class ApiHttpService {
    */
   delete<T>(route: string, params?: HttpParams): Observable<T> {
     return this.http.delete<T>(
-      this.createCompleteRoute(route, environment.baseUrl),
-      this.generateHeaders(params)
+      this.createCompleteRoute(route, environment.baseUrl)
     );
   }
 
@@ -33,8 +32,7 @@ export class ApiHttpService {
    */
   public get<T>(route: string, params?: HttpParams): Observable<T> {
     return this.http.get<T>(
-      this.createCompleteRoute(route, environment.baseUrl),
-      this.generateHeaders(params)
+      this.createCompleteRoute(route, environment.baseUrl)
     );
   }
 
@@ -47,8 +45,7 @@ export class ApiHttpService {
   public post<T>(route: string, body: T, params?: HttpParams): Observable<T> {
     return this.http.post<T>(
       this.createCompleteRoute(route, environment.baseUrl),
-      body,
-      this.generateHeaders(params)
+      body
     );
   }
 
@@ -61,8 +58,7 @@ export class ApiHttpService {
   public put<T>(route: string, body: T, params?: HttpParams): Observable<T> {
     return this.http.put<T>(
       this.createCompleteRoute(route, environment.baseUrl),
-      body,
-      this.generateHeaders(params)
+      body
     );
   }
 
@@ -76,18 +72,6 @@ export class ApiHttpService {
   }
 
   /**
-   * Method to generate headers
-   */
-  private generateHeaders(params?: HttpParams) {
-    return {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json', Authorization: 'Bearer ' + String(sessionStorage.getItem('access_token')) // eslint-disable-line prefer-template
-      }),
-      params
-    };
-  }
-
-  /**
    * Method to replace param to value
    * Parameter {string} urlApi
    * Parameter {string} param param to change in url
@@ -95,7 +79,7 @@ export class ApiHttpService {
    * Returns {string} url with idPolicy
    */
   public replaceUrl(urlApi: string, param: string, value: any): string {
-      return urlApi.replace(param, String(value));
+    return urlApi.replace(param, String(value));
   }
 
 
@@ -112,11 +96,11 @@ export class ApiHttpService {
         if (error.error.errors.length > 0) {
           errorApi = error.error.errors;
         } else {
-          errorApi.push({message: error.error.statusText});
+          errorApi.push({ message: error.error.statusText });
         }
       } else if (error.status === 0) {
         errorApi.push(error);
-      } else  {
+      } else {
         errorApi = error.error.errors;
       }
     }
