@@ -25,6 +25,5 @@ export const tableOption: Table[] = [
         type:'periodDate',
         data:'period.to',
         data2:'period.from'
-
     },
 ]

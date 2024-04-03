@@ -68,7 +68,7 @@ export class TableComponent implements AfterViewInit {
 
   getData(item: Table, element: any){
     // Acceder al nombre de la propiedad deseada desde item.def
-    const propertyName = item.def;
+    const propertyName = item.data;
     if(item.def === appConstants.columns.period){
       return this.formatDate(element.period.from) + ' - ' + this.formatDate(element.period.to)
     }else if (element.hasOwnProperty(propertyName)) {
