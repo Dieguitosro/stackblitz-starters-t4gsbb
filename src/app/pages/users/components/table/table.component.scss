@@ -1,0 +1,46 @@
+.custom-table th {
+    font-size: 0.85em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background-color: rgba(29, 150, 178, 1);
+    border: 1px solid rgba(29, 150, 178, 1);
+    color: white;
+}
+
+.custom-table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 10;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.custom-table caption {
+    font-size: 1.5em;
+    margin: 0.5em 0 0.75em;
+}
+
+.custom-table tr {
+    padding: 0.35em;
+    border: 1px solid rgba(29, 150, 178, 1);
+    border-width: 1px;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(94, 93, 82, 0.1);
+}
+
+tr:nth-child(odd) {
+    background: #fff;
+}
+
+.custom-table th,
+.custom-table td {
+    padding: 0.625em;
+    text-align: left;
+}
+
+tr.mat-mdc-footer-row td {
+    font-weight: bold;
+}
